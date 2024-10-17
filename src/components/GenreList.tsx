@@ -13,7 +13,8 @@ const GenreList = ({onSelectGenre,selectedGenre}:Props) => {
   if (error) return null
   return (
     <>
-      <List>
+      <List 
+        padding={10}>
         {genres.map((genre) => (
             <ListItem marginY={2}>
                 <HStack>
