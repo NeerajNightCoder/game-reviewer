@@ -23,7 +23,7 @@ const GenreList = ({ onSelectGenre, selectedGenre }: Props) => {
     <>
       <List padding={10}>
         {genres.map((genre) => (
-          <ListItem marginY={2}>
+          <ListItem marginY={2} key={genre.id}>
             <HStack>
               <Image
                 boxSize={'32px'}

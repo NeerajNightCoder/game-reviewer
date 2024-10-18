@@ -5,8 +5,12 @@ import GameCardSkeleton from './GameCardSkeleton';
 import { Genre } from '../hooks/useGenres';
 import { GameQuery } from '../App';
 
-const GameGrid = ({ genre, platform }: GameQuery) => {
-  const { games, error, isLoading } = useGames({ genre, platform });
+const GameGrid = ({ genre, platform, sortOrder }: GameQuery) => {
+  const { games, error, isLoading } = useGames({
+    genre,
+    platform,
+    sortOrder,
+  } as GameQuery);
   const skeletons = [1, 2, 3, 4, 5, 6];
 
   return (
@@ -24,9 +28,11 @@ const GameGrid = ({ genre, platform }: GameQuery) => {
             No {genre?.name} Games for {platform?.name}
           </Text>
         )}
-        {games.map((game) => (
-          <GameCard key={game.id} game={game} />
-        ))}
+        {games
+          .filter((game) => game.background_image)
+          .map((game) => (
+            <GameCard key={game.id} game={game} />
+          ))}
       </SimpleGrid>
     </>
   );

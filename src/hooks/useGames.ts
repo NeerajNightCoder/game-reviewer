@@ -18,12 +18,17 @@ export interface Platform {
   slug: string;
 }
 
+export interface SortOrder {
+  value: string;
+  label: string;
+}
+
 interface FetchGamesResponse {
   count: number;
   results: Game[];
 }
 
-const useGames = ({ genre, platform }: GameQuery) => {
+const useGames = ({ genre, platform, sortOrder }: GameQuery) => {
   const [games, setGames] = useState<Game[]>([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +39,11 @@ const useGames = ({ genre, platform }: GameQuery) => {
     apiClient
       .get<FetchGamesResponse>('/games', {
         signal: controller.signal,
-        params: { genres: genre?.id, platforms: platform?.id },
+        params: {
+          genres: genre?.id,
+          platforms: platform?.id,
+          ordering: sortOrder?.value,
+        },
       })
       .then((res) => {
         setGames(res.data.results);
@@ -46,7 +55,7 @@ const useGames = ({ genre, platform }: GameQuery) => {
         setIsLoading(false);
       });
     return () => controller.abort();
-  }, [genre?.id, platform?.id]);
+  }, [genre?.id, platform?.id, sortOrder?.value]);
 
   return { games, error, isLoading };
 };
