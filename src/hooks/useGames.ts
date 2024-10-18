@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import apiClient from '../services/api-client';
 import { CanceledError } from 'axios';
 import { Genre } from './useGenres';
+import { GameQuery } from '../App';
 
 export interface Game {
   id: number;
@@ -22,10 +23,7 @@ interface FetchGamesResponse {
   results: Game[];
 }
 
-const useGames = (
-  selectedGenre: Genre | null,
-  selectedPlatform: Platform | null
-) => {
+const useGames = ({ genre, platform }: GameQuery) => {
   const [games, setGames] = useState<Game[]>([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +34,7 @@ const useGames = (
     apiClient
       .get<FetchGamesResponse>('/games', {
         signal: controller.signal,
-        params: { genres: selectedGenre?.id, platforms: selectedPlatform?.id },
+        params: { genres: genre?.id, platforms: platform?.id },
       })
       .then((res) => {
         setGames(res.data.results);
@@ -48,7 +46,7 @@ const useGames = (
         setIsLoading(false);
       });
     return () => controller.abort();
-  }, [selectedGenre?.id, selectedPlatform?.id]);
+  }, [genre?.id, platform?.id]);
 
   return { games, error, isLoading };
 };
