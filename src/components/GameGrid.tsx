@@ -5,11 +5,12 @@ import GameCardSkeleton from './GameCardSkeleton';
 import { Genre } from '../hooks/useGenres';
 import { GameQuery } from '../App';
 
-const GameGrid = ({ genre, platform, sortOrder }: GameQuery) => {
+const GameGrid = ({ genre, platform, sortOrder, searchText }: GameQuery) => {
   const { games, error, isLoading } = useGames({
     genre,
     platform,
     sortOrder,
+    searchText,
   } as GameQuery);
   const skeletons = [1, 2, 3, 4, 5, 6];
 
@@ -17,7 +18,7 @@ const GameGrid = ({ genre, platform, sortOrder }: GameQuery) => {
     <>
       {error && <Text>{error}</Text>}
       <SimpleGrid
-        columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
+        columns={{ sm: 1, md: 2, lg: 2, xl: 3, '2xl': 4 }}
         spacing={10}
         padding={10}
       >

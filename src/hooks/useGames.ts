@@ -28,10 +28,11 @@ interface FetchGamesResponse {
   results: Game[];
 }
 
-const useGames = ({ genre, platform, sortOrder }: GameQuery) => {
+const useGames = ({ genre, platform, sortOrder, searchText }: GameQuery) => {
   const [games, setGames] = useState<Game[]>([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  console.log(searchText);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -43,6 +44,7 @@ const useGames = ({ genre, platform, sortOrder }: GameQuery) => {
           genres: genre?.id,
           platforms: platform?.id,
           ordering: sortOrder?.value,
+          search: searchText,
         },
       })
       .then((res) => {
@@ -55,7 +57,7 @@ const useGames = ({ genre, platform, sortOrder }: GameQuery) => {
         setIsLoading(false);
       });
     return () => controller.abort();
-  }, [genre?.id, platform?.id, sortOrder?.value]);
+  }, [genre?.id, platform?.id, sortOrder?.value, searchText]);
 
   return { games, error, isLoading };
 };
